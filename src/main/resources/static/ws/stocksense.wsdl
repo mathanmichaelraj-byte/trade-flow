@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tf="urn:stocksense:ws"
+                  name="StockSenseService"
+                  targetNamespace="urn:stocksense:ws">
+
+    <wsdl:types>
+        <xsd:schema>
+            <xsd:import namespace="urn:stocksense:ws" schemaLocation="stocksense.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- messages -->
+    <wsdl:message name="searchStocksIn"><wsdl:part name="parameters" element="tf:searchStocks"/></wsdl:message>
+    <wsdl:message name="searchStocksOut"><wsdl:part name="parameters" element="tf:searchStocksResponse"/></wsdl:message>
+    <wsdl:message name="getCompanyInfoIn"><wsdl:part name="parameters" element="tf:getCompanyInfo"/></wsdl:message>
+    <wsdl:message name="getCompanyInfoOut"><wsdl:part name="parameters" element="tf:getCompanyInfoResponse"/></wsdl:message>
+    <wsdl:message name="getStockQuoteIn"><wsdl:part name="parameters" element="tf:getStockQuote"/></wsdl:message>
+    <wsdl:message name="getStockQuoteOut"><wsdl:part name="parameters" element="tf:getStockQuoteResponse"/></wsdl:message>
+    <wsdl:message name="getHistoricalDataIn"><wsdl:part name="parameters" element="tf:getHistoricalData"/></wsdl:message>
+    <wsdl:message name="getHistoricalDataOut"><wsdl:part name="parameters" element="tf:getHistoricalDataResponse"/></wsdl:message>
+    <wsdl:message name="getTechnicalAnalysisIn"><wsdl:part name="parameters" element="tf:getTechnicalAnalysis"/></wsdl:message>
+    <wsdl:message name="getTechnicalAnalysisOut"><wsdl:part name="parameters" element="tf:getTechnicalAnalysisResponse"/></wsdl:message>
+    <wsdl:message name="predictStockIn"><wsdl:part name="parameters" element="tf:predictStock"/></wsdl:message>
+    <wsdl:message name="predictStockOut"><wsdl:part name="parameters" element="tf:predictStockResponse"/></wsdl:message>
+    <wsdl:message name="compareStocksIn"><wsdl:part name="parameters" element="tf:compareStocks"/></wsdl:message>
+    <wsdl:message name="compareStocksOut"><wsdl:part name="parameters" element="tf:compareStocksResponse"/></wsdl:message>
+    <wsdl:message name="getPredictionHistoryIn"><wsdl:part name="parameters" element="tf:getPredictionHistory"/></wsdl:message>
+    <wsdl:message name="getPredictionHistoryOut"><wsdl:part name="parameters" element="tf:getPredictionHistoryResponse"/></wsdl:message>
+    <wsdl:message name="getModelPerformanceIn"><wsdl:part name="parameters" element="tf:getModelPerformance"/></wsdl:message>
+    <wsdl:message name="getModelPerformanceOut"><wsdl:part name="parameters" element="tf:getModelPerformanceResponse"/></wsdl:message>
+    <wsdl:message name="getWatchlistIn"><wsdl:part name="parameters" element="tf:getWatchlist"/></wsdl:message>
+    <wsdl:message name="getWatchlistOut"><wsdl:part name="parameters" element="tf:getWatchlistResponse"/></wsdl:message>
+    <wsdl:message name="addToWatchlistIn"><wsdl:part name="parameters" element="tf:addToWatchlist"/></wsdl:message>
+    <wsdl:message name="addToWatchlistOut"><wsdl:part name="parameters" element="tf:addToWatchlistResponse"/></wsdl:message>
+    <wsdl:message name="removeFromWatchlistIn"><wsdl:part name="parameters" element="tf:removeFromWatchlist"/></wsdl:message>
+    <wsdl:message name="removeFromWatchlistOut"><wsdl:part name="parameters" element="tf:removeFromWatchlistResponse"/></wsdl:message>
+    <wsdl:message name="getSystemStatusIn"><wsdl:part name="parameters" element="tf:getSystemStatus"/></wsdl:message>
+    <wsdl:message name="getSystemStatusOut"><wsdl:part name="parameters" element="tf:getSystemStatusResponse"/></wsdl:message>
+    <wsdl:message name="StockSenseFault"><wsdl:part name="detail" element="tf:error"/></wsdl:message>
+
+    <!-- port type -->
+    <wsdl:portType name="StockSensePort">
+        <wsdl:operation name="searchStocks">
+            <wsdl:input message="tf:searchStocksIn"/><wsdl:output message="tf:searchStocksOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getCompanyInfo">
+            <wsdl:input message="tf:getCompanyInfoIn"/><wsdl:output message="tf:getCompanyInfoOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getStockQuote">
+            <wsdl:input message="tf:getStockQuoteIn"/><wsdl:output message="tf:getStockQuoteOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getHistoricalData">
+            <wsdl:input message="tf:getHistoricalDataIn"/><wsdl:output message="tf:getHistoricalDataOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getTechnicalAnalysis">
+            <wsdl:input message="tf:getTechnicalAnalysisIn"/><wsdl:output message="tf:getTechnicalAnalysisOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="predictStock">
+            <wsdl:input message="tf:predictStockIn"/><wsdl:output message="tf:predictStockOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="compareStocks">
+            <wsdl:input message="tf:compareStocksIn"/><wsdl:output message="tf:compareStocksOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPredictionHistory">
+            <wsdl:input message="tf:getPredictionHistoryIn"/><wsdl:output message="tf:getPredictionHistoryOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getModelPerformance">
+            <wsdl:input message="tf:getModelPerformanceIn"/><wsdl:output message="tf:getModelPerformanceOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getWatchlist">
+            <wsdl:input message="tf:getWatchlistIn"/><wsdl:output message="tf:getWatchlistOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="addToWatchlist">
+            <wsdl:input message="tf:addToWatchlistIn"/><wsdl:output message="tf:addToWatchlistOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="removeFromWatchlist">
+            <wsdl:input message="tf:removeFromWatchlistIn"/><wsdl:output message="tf:removeFromWatchlistOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+        <wsdl:operation name="getSystemStatus">
+            <wsdl:input message="tf:getSystemStatusIn"/><wsdl:output message="tf:getSystemStatusOut"/>
+            <wsdl:fault name="StockSenseFault" message="tf:StockSenseFault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!-- binding: SOAP 1.1, document/literal -->
+    <wsdl:binding name="StockSenseBinding" type="tf:StockSensePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="searchStocks">
+            <soap:operation soapAction="urn:stocksense:ws/searchStocks"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getCompanyInfo">
+            <soap:operation soapAction="urn:stocksense:ws/getCompanyInfo"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getStockQuote">
+            <soap:operation soapAction="urn:stocksense:ws/getStockQuote"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getHistoricalData">
+            <soap:operation soapAction="urn:stocksense:ws/getHistoricalData"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getTechnicalAnalysis">
+            <soap:operation soapAction="urn:stocksense:ws/getTechnicalAnalysis"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="predictStock">
+            <soap:operation soapAction="urn:stocksense:ws/predictStock"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="compareStocks">
+            <soap:operation soapAction="urn:stocksense:ws/compareStocks"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPredictionHistory">
+            <soap:operation soapAction="urn:stocksense:ws/getPredictionHistory"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getModelPerformance">
+            <soap:operation soapAction="urn:stocksense:ws/getModelPerformance"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getWatchlist">
+            <soap:operation soapAction="urn:stocksense:ws/getWatchlist"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addToWatchlist">
+            <soap:operation soapAction="urn:stocksense:ws/addToWatchlist"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="removeFromWatchlist">
+            <soap:operation soapAction="urn:stocksense:ws/removeFromWatchlist"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getSystemStatus">
+            <soap:operation soapAction="urn:stocksense:ws/getSystemStatus"/>
+            <wsdl:input><soap:body use="literal"/></wsdl:input><wsdl:output><soap:body use="literal"/></wsdl:output>
+            <wsdl:fault name="StockSenseFault"><soap:fault name="StockSenseFault" use="literal"/></wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="StockSenseService">
+        <wsdl:port name="StockSensePort" binding="tf:StockSenseBinding">
+            <soap:address location="http://localhost:8081/ws/stocksense"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

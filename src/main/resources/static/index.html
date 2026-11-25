@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StockSense</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" id="home" href="#" title="Back to all stocks"><span class="logo">&#9650;</span> StockSense</a>
+  <div class="search">
+    <input id="search" type="search" placeholder="Search a company or ticker (AAPL, TCS.NS, Tesla...)" autocomplete="off" spellcheck="false">
+    <ul id="suggestions" class="suggestions" hidden></ul>
+  </div>
+  <div id="status" class="status"></div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <h3>Watchlist</h3>
+    <ul id="watchlist" class="watchlist"></ul>
+    <p id="watchEmpty" class="muted small">Nothing here yet. Open a stock and press the star.</p>
+  </aside>
+
+  <main>
+    <section id="welcome" class="welcome">
+      <h2>Stock analysis &amp; prediction</h2>
+      <p class="muted">Pick a stock below, or search for any company or ticker, to see its price history, technical indicators and a machine-learning estimate of where it may move next.</p>
+      <div class="tiles" id="quick"></div>
+    </section>
+
+    <section id="stock" hidden>
+      <div id="simBanner" class="banner" hidden>Showing <b>simulated</b> data: live market data providers could not be reached for this symbol. Do not use it for real decisions.</div>
+      <div class="card head">
+        <div>
+          <h2 id="symTitle"></h2>
+          <div id="symName" class="muted"></div>
+          <div id="badges" class="badges"></div>
+        </div>
+        <div class="quote">
+          <div id="price" class="price"></div>
+          <div id="change" class="change"></div>
+          <div id="quoteMeta" class="muted small"></div>
+        </div>
+        <button id="watchBtn" class="star" title="Add to watchlist" aria-label="Toggle watchlist">&#9734;</button>
+      </div>
+
+      <nav class="tabs" id="tabs">
+        <button data-tab="overview" class="active">Overview</button>
+        <button data-tab="technical">Technical</button>
+        <button data-tab="prediction">Prediction</button>
+        <button data-tab="compare">Compare</button>
+      </nav>
+
+      <!-- Overview -->
+      <section id="tab-overview" class="panel">
+        <div class="toolbar">
+          <div class="seg" id="ranges">
+            <button data-range="1W">1W</button><button data-range="1M">1M</button><button data-range="3M">3M</button>
+            <button data-range="6M">6M</button><button data-range="1Y" class="active">1Y</button><button data-range="3Y">3Y</button>
+          </div>
+          <label>Interval
+            <select id="interval"><option value="DAILY">Daily</option><option value="WEEKLY">Weekly</option><option value="MONTHLY">Monthly</option><option value="YEARLY">Yearly</option></select>
+          </label>
+          <label>Chart
+            <select id="chartType"><option value="candle">Candlestick</option><option value="line">Line</option></select>
+          </label>
+        </div>
+        <div class="card"><div class="chart tall"><canvas id="priceChart"></canvas></div><div class="chart short"><canvas id="volChart"></canvas></div></div>
+        <div class="card">
+          <h3>OHLC &mdash; Open, High, Low, Close <span id="ohlcNote" class="muted small"></span></h3>
+          <div class="table-wrap"><table class="table" id="ohlcTable"></table></div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h3>Period statistics</h3><div id="summary" class="kv"></div></div>
+          <div class="card"><h3>Fundamentals</h3><div id="fundamentals" class="kv"></div>
+            <h3 style="margin-top:14px">Company</h3><div id="company" class="kv"></div><p id="about" class="about muted small"></p></div>
+        </div>
+      </section>
+
+      <!-- Technical -->
+      <section id="tab-technical" class="panel" hidden>
+        <div class="toolbar">
+          <label class="check"><input type="checkbox" id="ovSma20" checked> SMA 20</label>
+          <label class="check"><input type="checkbox" id="ovSma50" checked> SMA 50</label>
+          <label class="check"><input type="checkbox" id="ovEma20" checked> EMA 20</label>
+          <label class="check"><input type="checkbox" id="ovBb"> Bollinger Bands</label>
+          <span class="muted small">Range follows the Overview selector</span>
+        </div>
+        <div class="card"><h3>Latest indicator values <span id="indDate" class="muted small"></span></h3><div id="indicatorCards" class="kv"></div></div>
+        <div class="card"><div class="chart tall"><canvas id="techPrice"></canvas></div></div>
+        <div class="grid2">
+          <div class="card"><h3>RSI (14)</h3><div class="chart short"><canvas id="techRsi"></canvas></div></div>
+          <div class="card"><h3>MACD (12, 26, 9)</h3><div class="chart short"><canvas id="techMacd"></canvas></div></div>
+        </div>
+        <div class="card"><h3>Technical summary <span id="overall" class="pill"></span></h3><div id="signalCounts" class="muted small"></div>
+          <table class="table" id="signals"></table></div>
+      </section>
+
+      <!-- Prediction -->
+      <section id="tab-prediction" class="panel" hidden>
+        <div class="card">
+          <div class="toolbar">
+            <label>Horizon
+              <select id="horizon"><option value="1">1 trading day</option><option value="5" selected>5 trading days</option><option value="10">10 trading days</option><option value="30">30 trading days</option></select>
+            </label>
+            <label class="check"><input type="checkbox" id="forceRetrain"> Retrain model</label>
+            <button id="runPredict" class="primary">Run prediction</button>
+          </div>
+          <div id="predResult" class="muted">Press <b>Run prediction</b> to train and evaluate the models on this stock's history.</div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h3>Model comparison (hold-out test)</h3><div id="predModels" class="muted small">Run a prediction to see this.</div></div>
+          <div class="card"><h3>Live track record</h3><div id="predPerf" class="muted small"></div></div>
+        </div>
+        <div class="card"><h3>Prediction history</h3><div id="predHistory" class="muted small"></div></div>
+        <p class="disclaimer">StockSense is an educational and analytical project. Predictions are probabilistic estimates, not guaranteed outcomes or financial advice.</p>
+      </section>
+
+      <!-- Compare -->
+      <section id="tab-compare" class="panel" hidden>
+        <div class="card toolbar">
+          <label class="grow">Symbols (2-5, comma separated)
+            <input id="cmpSymbols" type="text" placeholder="AAPL, MSFT, NVDA" spellcheck="false">
+          </label>
+          <label>Range
+            <select id="cmpRange"><option>1M</option><option>3M</option><option>6M</option><option selected>1Y</option><option>3Y</option></select>
+          </label>
+          <button id="runCompare" class="primary">Compare</button>
+        </div>
+        <div class="card"><div class="chart tall"><canvas id="cmpChart"></canvas></div><p class="muted small">Prices are rebased to 100 at the start of the range.</p></div>
+        <div class="card"><table class="table" id="cmpTable"></table></div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+<script src="js/soap.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

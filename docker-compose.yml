@@ -1,0 +1,47 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change-me-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-stocksense}
+      MYSQL_USER: ${MYSQL_USER:-stocksense}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  ml-service:
+    build: ./ml-service
+    restart: unless-stopped
+    environment:
+      MODEL_DIR: /srv/models
+    volumes:
+      - ml-models:/srv/models
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ml-service:
+        condition: service_started
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-stocksense}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USER: ${MYSQL_USER:-stocksense}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-change-me}
+      ML_SERVICE_URL: http://ml-service:8000
+      MARKET_PROVIDERS: ${MARKET_PROVIDERS:-yahoo,twelvedata,simulated}
+      TWELVE_DATA_API_KEY: ${TWELVE_DATA_API_KEY:-}
+    ports:
+      - "8081:8081"
+
+volumes:
+  mysql-data:
+  ml-models:
